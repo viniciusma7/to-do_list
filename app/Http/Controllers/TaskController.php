@@ -55,15 +55,17 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view("tasks.edit", ["task" => $task]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskStoreRequest $request, Task $task)
     {
-        //
+        $task->update($request->validated());
+
+        return redirect()->route("tasks.index")->with("success","Task atualizada com sucesso.");
     }
 
     /**

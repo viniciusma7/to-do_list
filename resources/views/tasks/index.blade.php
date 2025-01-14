@@ -18,7 +18,7 @@
                     @if (session('success'))
                         <p class="text-green-600">{{ session('success') }}</p>
                     @endif
-                    <table class="mt-3">
+                    <table class="mt-3 table-fixed w-full">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -29,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($tasks as $task)
+                            @forelse ($tasks as $task)
                                 <tr>
                                     <td>{{ $task->title }}</td>
                                     <td>{{ Str::limit($task->description, 40, '...') }}</td>
@@ -37,7 +37,7 @@
                                     <td>{{ date_format($task->date_limit, "d/m/Y") }}</td>
                                     <td>
                                         <a href="{{ route('tasks.show', $task) }}">Show</a>
-                                        <a href="#">Edit</a>
+                                        <a href="{{ route('tasks.edit', $task) }}">Edit</a>
                                         <form action="{{ route('tasks.destroy', $task) }}" method="POST">
                                             @csrf
                                             @method("DELETE")
@@ -46,7 +46,11 @@
                                         <a href="#">Mark as completed</a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhuma task encontrada. Para adicionar uma task <a href="{{ route('tasks.create') }}" class="text-blue-500">clique aqui</a></td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
