@@ -38,7 +38,11 @@
                                     <td>
                                         <a href="{{ route('tasks.show', $task) }}">Show</a>
                                         <a href="#">Edit</a>
-                                        <a href="#">Delete</a>
+                                        <form action="{{ route('tasks.destroy', $task) }}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit">Delete</button>
+                                        </form>
                                         <a href="#">Mark as completed</a>
                                     </td>
                                 </tr>
