@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TaskStoreRequest;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\TaskStoreRequest;
 
 class TaskController extends Controller
 {
@@ -46,6 +47,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        Gate::authorize("view", $task);
+
         return view("tasks.show", ["task" => $task]);
     }
 
@@ -54,6 +57,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        Gate::authorize("update", $task);
+
         return view("tasks.edit", ["task" => $task]);
     }
 
@@ -62,6 +67,8 @@ class TaskController extends Controller
      */
     public function update(TaskStoreRequest $request, Task $task)
     {
+        Gate::authorize("update", $task);
+
         $task->update($request->validated());
 
         return redirect()->route("tasks.index")->with("success","Task atualizada com sucesso.");
@@ -72,6 +79,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        Gate::authorize("delete", $task);
+
         $task->delete();
 
         return redirect()->route("tasks.index")->with("success","Task deletada com sucesso.");
@@ -79,6 +88,8 @@ class TaskController extends Controller
 
     public function complete(Task $task)
     {
+        Gate::authorize("complete", $task);
+
         $task->is_completed = !$task->is_completed;
         $task->save();
 
