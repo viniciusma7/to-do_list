@@ -6,17 +6,36 @@ use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\TaskStoreRequest;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Auth::user()->tasks;
+        $tasks = Auth::user()->tasks();
 
-        return view("tasks.index", ["tasks" => $tasks]);
+        if($request->filled("title")) {
+            $tasks = $tasks->where("title", "like", '%' . $request->input('title') . '%');
+        }
+
+        if ($request->filled("statusTask")) {
+            if ($request->input('statusTask') == 2) {
+                $tasks = $tasks->where("is_completed", true);
+            } elseif ($request->input('statusTask') == 3) {
+                $tasks = $tasks->where("is_completed", false);
+            }
+        }
+
+        if($request->filled("initialPeriod") && $request->filled("finalPeriod")) {
+            $tasks = $tasks->whereBetween("date_limit", [$request->input(key: 'initialPeriod'), $request->input('finalPeriod')]);
+        }
+
+        $tasks = $tasks->paginate(20);
+
+        return view("tasks.index", ["tasks" => $tasks, "request" => $request]);
     }
 
     /**

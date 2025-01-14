@@ -18,6 +18,38 @@
                     @if (session('success'))
                         <p class="text-green-600">{{ session('success') }}</p>
                     @endif
+                    <div>
+                        <form action="{{ route('tasks.index') }}" method="GET">
+                            <div>
+                                <label for="title">Title:</label>
+                                <input type="text" name="title" id="title" class="block text-black rounded px-1 py-2 w-40" value="{{ $request->title }}">
+                            </div>
+
+                            <div>
+                                <label for="statusTask">Status:</label>
+                                <select name="statusTask" id="statusTask" class="block text-black rounded px-1 py-2 w-40">
+                                    <option value="1" {{ $request->statusTask == 1 ? 'selected' : ''}}>All Status</option>
+                                    <option value="2" {{ $request->statusTask == 2 ? 'selected' : ''}}>Completed Tasks</option>
+                                    <option value="3" {{ $request->statusTask == 3 ? 'selected' : ''}}>Pending Tasks</option>
+                                </select>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div>
+                                    <label for="initialPeriod">Initial Period (Date Limit)</label>
+                                    <input type="date" name="initialPeriod" id="initialPeriod" class="block text-black rounded px-1 py-2 w-40" value="{{ $request->initialPeriod }}">
+                                </div>
+                                <div>
+                                    <label for="finalPeriod">Final Period (Date Limit)</label>
+                                    <input type="date" name="finalPeriod" id="finalPeriod" class="block text-black rounded px-1 py-2 w-40" value="{{ $request->finalPeriod }}">
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="submit" value="Search" class="button bg-blue-500 py-1 px-2 rounded-lg mt-4">
+                            </div>
+                        </form>
+                    </div>
                     <table class="mt-3 table-fixed w-full">
                         <thead>
                             <tr>
@@ -30,7 +62,7 @@
                         </thead>
                         <tbody>
                             @forelse ($tasks as $task)
-                                <tr>
+                                <tr class="hover:bg-gray-600">
                                     <td>{{ $task->title }}</td>
                                     <td>{{ Str::limit($task->description, 40, '...') }}</td>
                                     <td>{{ $task->is_completed }}</td>
@@ -45,13 +77,13 @@
                                         </form>
                                         <form action="{{ route('tasks.complete', $task) }}" method="POST">
                                             @csrf
-                                            <button type="submit">{{ $task->is_completed ? 'Marcar como pendente' : 'Marcar como concluída' }}</button>
+                                            <button type="submit">{{ $task->is_completed ? 'Mark as pending' : 'Mark as completed' }}</button>
                                         </form>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">Nenhuma task encontrada. Para adicionar uma task <a href="{{ route('tasks.create') }}" class="text-blue-500">clique aqui</a></td>
+                                    <td colspan="5" class="text-center">Nenhuma task encontrada.</td>
                                 </tr>
                             @endforelse
                         </tbody>
