@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskStoreRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
@@ -76,5 +75,13 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()->route("tasks.index")->with("success","Task deletada com sucesso.");
+    }
+
+    public function complete(Task $task)
+    {
+        $task->is_completed = !$task->is_completed;
+        $task->save();
+
+        return redirect()->route("tasks.index")->with("success","Status da task alterada com sucesso.");
     }
 }

@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function() {
     Route::resource('/tasks', TaskController::class);
+    Route::post('/tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
 });
 
 require __DIR__.'/auth.php';

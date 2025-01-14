@@ -43,7 +43,10 @@
                                             @method("DELETE")
                                             <button type="submit">Delete</button>
                                         </form>
-                                        <a href="#">Mark as completed</a>
+                                        <form action="{{ route('tasks.complete', $task) }}" method="POST">
+                                            @csrf
+                                            <button type="submit">{{ $task->is_completed ? 'Marcar como pendente' : 'Marcar como concluída' }}</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
