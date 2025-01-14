@@ -36,7 +36,7 @@
                                     <td>{{ $task->is_completed }}</td>
                                     <td>{{ date_format($task->date_limit, "d/m/Y") }}</td>
                                     <td>
-                                        <a href="#">Show</a>
+                                        <a href="{{ route('tasks.show', $task) }}">Show</a>
                                         <a href="#">Edit</a>
                                         <a href="#">Delete</a>
                                         <a href="#">Mark as completed</a>
