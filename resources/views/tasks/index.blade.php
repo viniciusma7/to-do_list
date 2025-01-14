@@ -9,7 +9,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table>
+                    <div class="flex justify-end">
+                        <a href="{{ route('tasks.create') }}">
+                            <button class="button bg-blue-500 py-1 px-2 rounded-lg">Create Task</button>
+                        </a>
+                    </div>
+                    <hr class="mt-2">
+                    @if (session('success'))
+                        <p class="text-green-600">{{ session('success') }}</p>
+                    @endif
+                    <table class="mt-3">
                         <thead>
                             <tr>
                                 <th>Title</th>
