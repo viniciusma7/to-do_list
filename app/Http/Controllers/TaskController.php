@@ -33,7 +33,8 @@ class TaskController extends Controller
             $tasks = $tasks->whereBetween("date_limit", [$request->input(key: 'initialPeriod'), $request->input('finalPeriod')]);
         }
 
-        $tasks = $tasks->paginate(20);
+        $tasks = $tasks->orderBy('date_limit', 'asc')
+                        ->paginate(20);
 
         return view("tasks.index", ["tasks" => $tasks, "request" => $request]);
     }
