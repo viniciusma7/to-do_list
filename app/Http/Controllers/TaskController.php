@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\TaskStoreRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\TaskUpdateRequest;
 
 class TaskController extends Controller
 {
@@ -85,10 +86,8 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TaskStoreRequest $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
-        Gate::authorize("update", $task);
-
         $task->update($request->validated());
 
         return redirect()->route("tasks.index")->with("success","Task atualizada com sucesso.");
